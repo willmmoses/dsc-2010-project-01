@@ -1,9 +1,10 @@
-install.packages("xlsx")
-library("xlsx")
+library("RSQLite")
 
 reader <- function (){
-  db <- xlsx.read("iMessage-Data_2021-09-16.xlsx")
-  print(db)
+  print("Reading file")
+  db <- dbConnect(RSQLite::SQLite(), "iMessage-Data.sqlite")
+  print(dbListTables(db))
+  print(dbListFields(db, 'Messages'))
 }
 
 reader()
