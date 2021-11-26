@@ -18,7 +18,6 @@ tidy_up <- function(messages) {
   return(filtered_me)
 }
 
-
 top10 <- function(messages) {
   by_id <- table(messages$id)
   by_id <- sort(by_id, decreasing = TRUE)
@@ -42,18 +41,32 @@ sprangbreak <- function(messages) {
   text(with_me, with_me_y + 500, labels = as.character(with_me_y))
   print(head(by_id))
   by_day <- table(just_chat$wday)
-  # by_day <- sort(by_day, decreasing = TRUE)
   with_me <- barplot(by_day, ylim = c(0, 12000), xlab = 'Day of Week', ylab = 'Number of Messages Sent in Chat per Day')
   with_me_y <- as.matrix(by_day)
   text(with_me, with_me_y + 500, labels = as.character(with_me_y))
+}
 
+daysofweek <- function(messages) {
+  just_chat <- messages %>%
+    filter(id == '+16158308574')
+  by_day <- table(just_chat$wday)
+  with_me <- barplot(by_day, ylim = c(0, 28000), xlab = 'Day of Week', ylab = 'Number of Messages Sent per Day by Me')
+  with_me_y <- as.matrix(by_day)
+  text(with_me, with_me_y + 500, labels = as.character(with_me_y))
+  just_chat <- messages %>%
+    filter(id != '+16158308574')
+  by_day <- table(just_chat$wday)
+  without_me <- barplot(by_day, ylim = c(0, 28000), xlab = 'Day of Week', ylab = 'Number of Messages Sent per Day by Everyone Else')
+  without_me_y <- as.matrix(by_day)
+  text(without_me, without_me_y + 500, labels = as.character(without_me_y))
 }
 
 main <- function() {
   messages <- reader()
   filtered_me <- tidy_up(messages)
-  # top10(filtered_me)
+  top10(filtered_me)
   sprangbreak(filtered_me)
+  daysofweek(filtered_me)
 }
 
 main()
