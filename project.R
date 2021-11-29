@@ -50,15 +50,15 @@ sprangbreak <- function(messages) {
 
 messages_by_day <- function(messages) {
   actual_text <- messages %>%
-    filter(is_emote == 0 & cache_has_attachments == 0 & id == '+16158308574')
+    filter(id == '+16158308574')
   by_day <- table(actual_text$wday)
   sent <- barplot(by_day, ylim = c(0, 18000), xlab = 'Day of Week', ylab = 'Number of Messages Sent per Day')
   sent_y <- as.matrix(by_day)
   text(sent, sent_y + 500, labels = as.character(sent_y))
   actual_text <- messages %>%
-  filter(is_emote == 0 & cache_has_attachments == 0 & id != '+16158308574')
+  filter(id != '+16158308574')
   by_day <- table(actual_text$wday)
-  received <- barplot(by_day, ylim = c(0, 25000), xlab = 'Day of Week', ylab = 'Number of Messages Received per Day')
+  received <- barplot(by_day, ylim = c(0, 26000), xlab = 'Day of Week', ylab = 'Number of Messages Received per Day')
   received_y <- as.matrix(by_day)
   text(received, received_y + 500, labels = as.character(received_y))
   cor.test(sent_y, received_y)
