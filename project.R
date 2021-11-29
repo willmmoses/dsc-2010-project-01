@@ -48,18 +48,6 @@ sprangbreak <- function(messages) {
   text(with_me, with_me_y + 500, labels = as.character(with_me_y))
 }
 
-words <- function(messages) {
-  actual_text <- messages %>%
-    filter(is_emote == 0 & cache_has_attachments == 0 & id == '+16158308574')
-  actual_text <- table(actual_text$text)
-  print(actual_text)
-  just_words <- paste(actual_text, sep = ' ')
-  print(summary(just_words))
-  # print(just_words)
-  # split_words <- strsplit(actual_text," ", perl = TRUE)
-  # head(summary(split_words))
-}
-
 messages_by_day <- function(messages) {
   actual_text <- messages %>%
     filter(is_emote == 0 & cache_has_attachments == 0 & id == '+16158308574')
