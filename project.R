@@ -1,5 +1,6 @@
 library("dplyr")
 library("lubridate")
+library(data.table)
 
 reader <- function() {
   print("Reading file")
@@ -64,11 +65,26 @@ messages_by_day <- function(messages) {
   cor.test(sent_y, received_y)
 }
 
+messages_over_time <- function(messages) {
+  by_date <- messages %>%
+    mutate(just_date = as_date(formatted_date))
+  by_date_sent <- by_date %>%
+    filter(id == '+16158308574')
+  by_date_received <- by_date %>%
+    filter(id != '+16158308574')
+  just_date_sent <- cumsum(table(by_date_sent$just_date))
+  just_date_received <- cumsum(table(by_date_received$just_date))
+  plot(just_date_sent, type = 'l', col = 'blue', ylim = c(0, 160000), xlim = c(0, 1800), xlab = 'Time(days)', ylab = 'Number of messages')
+  lines(just_date_received, type = 'l', col = 'grey')
+  legend(1, 150000, legend = c('Sent', 'Received'), col = c('blue', 'grey'), lty = 1:1, cex = 0.9)
+}
+
 main <- function() {
   messages <- reader()
   filtered_me <- tidy_up(messages)
   top10(filtered_me)
   messages_by_day(filtered_me)
+  messages_over_time(filtered_me)
 }
 
 main()
